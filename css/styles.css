@@ -238,3 +238,6 @@ input { width: 100%; min-width: 0; min-height: 36px; padding: 4px 8px; color: va
   .monitor-on .app-shell, .monitor-on .brand, .monitor-on .nav-link,
   .monitor-on .delete-dialog { text-shadow: none; box-shadow: none; }
 }
+
+/* Closing menus leave document flow while their reveal animation finishes. */
+.dropdown { position: relative; }
