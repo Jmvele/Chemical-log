@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080316">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PIXFILM COLLECTIVE / CHEMICAL LOG</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./css/styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script type="module" src="./js/main.js"></script>
+</head>
+<body>
+  <div class="monitor-screen"><div class="monitor-scroll">
+  <div class="app-shell">
+    <header class="site-header">
+      <h1 class="brand dashed-horizontal"><span>PIXFILM COLLECTIVE /</span><span> CHEMICAL LOG</span></h1>
+      <nav class="navigation" aria-label="Main navigation">
+        <a class="nav-link dashed-horizontal" href="#new-log" aria-current="page">NEW LOG</a>
+        <a class="nav-link dashed-horizontal" href="#history">HISTORY</a>
+      </nav>
+    </header>
+    <main id="main-content">
+      <section id="new-log" aria-label="New chemical log">
+        <form id="log-form" novalidate>
+          <p id="form-error" class="form-error" role="alert" hidden></p>
+          <fieldset id="form-fields" class="controls">
+            <legend class="sr-only">New chemical log entry</legend>
+            <div class="control-row">
+              <label id="user-label" for="user-trigger">User</label>
+              <div id="user-select" class="dropdown" data-field="user"></div>
+            </div>
+            <div class="control-row">
+              <label id="film-label" for="film-trigger">Film</label>
+              <div class="input-stack">
+                <div id="film-select" class="dropdown" data-field="film"></div>
+                <div id="film-other-row" class="other-field" hidden>
+                  <label for="film-other">Other:</label>
+                  <input id="film-other" name="filmOther" type="text" maxlength="120" autocomplete="off" aria-label="Other film">
+                </div>
+              </div>
+            </div>
+            <div class="control-row">
+              <label id="chemical-label" for="chemical-trigger">Chemical</label>
+              <div class="input-stack">
+                <div id="chemical-select" class="dropdown" data-field="chemical"></div>
+                <div id="chemical-other-row" class="other-field" hidden>
+                  <label for="chemical-other">Other:</label>
+                  <input id="chemical-other" name="chemicalOther" type="text" maxlength="120" autocomplete="off" aria-label="Other chemical">
+                </div>
+              </div>
+            </div>
+            <div class="control-row">
+              <label for="feet">Feet</label>
+              <input id="feet" name="feet" class="feet-input" type="text" inputmode="decimal" value="00.0" autocomplete="off" spellcheck="false" maxlength="24" aria-required="true">
+            </div>
+          </fieldset>
+          <div class="submit-row"><button id="submit-button" class="pink-button submit-button" type="submit">SUBMIT</button></div>
+          <p id="save-status" class="status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+      <section id="history" aria-label="Log history" hidden>
+        <h2 class="sr-only">Log history</h2>
+        <p id="history-status" class="status" role="status" aria-live="polite"></p>
+        <div id="history-list"></div>
+        <button id="load-more" class="text-button dashed-horizontal" type="button" hidden>LOAD MORE</button>
+        <button id="retry-history" class="text-button dashed-horizontal" type="button" hidden>TRY AGAIN</button>
+      </section>
+    </main>
+  </div>
+  </div></div>
+  <dialog id="delete-dialog" class="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-question">
+    <h2 id="delete-title" class="dialog-title">Delete confirmation</h2>
+    <div class="dialog-body">
+      <p id="delete-question">DO YOU WANT TO DELETE THIS LOG?</p>
+      <div class="dialog-actions">
+        <button id="delete-yes" class="answer-button answer-yes" type="button">YES</button>
+        <button id="delete-no" class="answer-button answer-no" type="button" autofocus>NO</button>
+      </div>
+      <p id="delete-error" class="dialog-error" role="alert" hidden></p>
+    </div>
+  </dialog>
+  <noscript><p class="noscript-message">Enable JavaScript to save entries and read the shared history.</p></noscript>
+</body>
+</html>
+
+

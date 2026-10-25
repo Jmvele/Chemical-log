@@ -1,0 +1,40 @@
+rules_version = '2';
+// Prototype for the explicitly requested public, no-sign-in collective log.
+// log_entries/{UUID}:
+// user: Madi or Jesus; film / chemical: listed option or Other:;
+// filmOther / chemicalOther: trimmed custom text, 1-120 characters for Other:,
+// empty otherwise; feet: positive finite number below 1e15;
+// createdAt: server timestamp. Entries are immutable; visitors may delete them.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function validOther(choice, custom) {
+      return custom is string && custom.size() <= 120 &&
+        ((choice == 'Other:' && custom.size() > 0 && custom.matches('.*\\S.*')) ||
+         (choice != 'Other:' && custom == ''));
+    }
+    function isValidEntry(data) {
+      return data.keys().hasAll(['user', 'film', 'filmOther', 'chemical', 'chemicalOther', 'feet', 'createdAt']) &&
+        data.keys().hasOnly(['user', 'film', 'filmOther', 'chemical', 'chemicalOther', 'feet', 'createdAt']) &&
+        data.user is string && data.user in ['Madi', 'Jesus'] &&
+        data.film is string && data.film in [
+          'BW Negative 8837', 'BW Negative Double-X 7222', 'BW Reversal Tri-X 7266',
+          'Colour Print 3383', 'Colour Ektachrome 7294', 'Other:'
+        ] &&
+        data.chemical is string && data.chemical in ['D-76', 'D-19', 'D-96', 'C-41', 'E-6', 'Other:'] &&
+        validOther(data.film, data.filmOther) &&
+        validOther(data.chemical, data.chemicalOther) &&
+        data.feet is number && data.feet > 0 && data.feet < 1000000000000000 &&
+        data.createdAt is timestamp && data.createdAt == request.time;
+    }
+    match /log_entries/{entryId} {
+      allow get: if true;
+      allow list: if request.query.limit != null && request.query.limit <= 51;
+      allow create: if entryId.matches('^[a-f0-9-]{36}$') && isValidEntry(request.resource.data);
+      allow update: if false;
+      allow delete: if true;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
