@@ -1,3 +1,4 @@
+import { animateDropdown } from './animations.js';
 // Accessible custom dropdown: options stay in document flow and push rows down.
 export class Dropdown {
   constructor(container, field, options, onChange) {
@@ -66,13 +67,14 @@ export class Dropdown {
     // One open dropdown at a time, including when opened with the keyboard.
     document.dispatchEvent(new CustomEvent('dropdown-opening', { detail: this.field }));
     this.opened = true;
-    this.list.hidden = false;
+    animateDropdown(this, true);
     this.trigger.setAttribute('aria-expanded', 'true');
     this.setActive(Math.max(0, this.options.indexOf(this.value)));
   }
-  close() {
+  close(change = () => {}) {
+    if (!this.opened) { change(); return; }
     this.opened = false;
-    this.list.hidden = true;
+    animateDropdown(this, false, change);
     this.trigger.setAttribute('aria-expanded', 'false');
     this.trigger.removeAttribute('aria-activedescendant');
   }
@@ -86,9 +88,10 @@ export class Dropdown {
     this.value = this.options[index];
     this.label.textContent = this.value;
     this.items.forEach((item, i) => item.setAttribute('aria-selected', String(i === index)));
-    this.close();
-    this.trigger.focus({ preventScroll: true });
-    this.onChange(this.value);
+    this.close(() => {
+      this.trigger.focus({ preventScroll: true });
+      this.onChange(this.value);
+    });
   }
   reset() {
     this.value = '';
