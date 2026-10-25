@@ -13,4 +13,4 @@ The effect does not capture the form into an image or send its contents anywhere
 
 For a comparison without effects, open `preview.html?effects=off#new-log`. Remove `?effects=off` to restore them. After editing source files, run `node prepare-preview.mjs` to rebuild the double-clickable preview.
 
-Verification: original form/data tests pass; browser appearance still needs local visual review because the agent's inspection browser could not reach the local HTTP preview. Production Firestore permissions and deployment are unaffected.
+Verification: 16 automated tests pass. The GitHub Pages version was visually checked on desktop. Live Firebase save, reload/persistence and deletion checks passed; the test entry was removed with approval.
