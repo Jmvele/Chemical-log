@@ -252,6 +252,33 @@ input { width: 100%; min-width: 0; min-height: 36px; padding: 4px 8px; color: va
 /* Closing menus leave document flow while their reveal animation finishes. */
 .dropdown { position: relative; }
 
+/* Touch/mobile fallback: avoid filtering the entire animated scroll surface.
+   Local shadows preserve color fringing without retaining displaced pixels. */
+@media (max-width: 600px), (hover: none) and (pointer: coarse) {
+  .monitor-on .monitor-fringing .monitor-scroll { filter: none; }
+  .monitor-on .app-shell {
+    text-shadow: -.242px 0 #ff685b80, .242px 0 #65ddff80;
+  }
+  .monitor-on .brand {
+    text-shadow: -.242px 0 #ff685b80, .242px 0 #65ddff80, 0 0 4px #d8e9ff35;
+  }
+  .monitor-on .nav-link {
+    text-shadow: -.242px 0 #ff685b80, .242px 0 #65ddff80;
+  }
+  .monitor-on .dropdown-trigger, .monitor-on .dropdown-options,
+  .monitor-on .pink-button {
+    box-shadow: -.242px 0 #ff685b80, .242px 0 #65ddff80;
+  }
+  .monitor-on input {
+    box-shadow: inset 2px 2px 0 var(--inset), -.242px 0 #ff685b80, .242px 0 #65ddff80;
+  }
+}
+@media (forced-colors: active) {
+  .monitor-on .app-shell, .monitor-on .brand, .monitor-on .nav-link,
+  .monitor-on .dropdown-trigger, .monitor-on .dropdown-options,
+  .monitor-on .pink-button, .monitor-on input { text-shadow: none; box-shadow: none; }
+}
+
 </style>
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 </head>
